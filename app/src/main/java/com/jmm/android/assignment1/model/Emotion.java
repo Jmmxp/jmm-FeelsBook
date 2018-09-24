@@ -1,7 +1,14 @@
 package com.jmm.android.assignment1.model;
 
-public abstract class Emotion {
+public class Emotion {
+    private EmotionType mEmotionType;
 
-    public abstract String getText();
+    public Emotion(EmotionType emotionType) {
+        mEmotionType = emotionType;
+    }
+
+    public EmotionType getEmotionType() {
+        return mEmotionType;
+    }
 
 }
