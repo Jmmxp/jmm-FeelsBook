@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jmm.android.assignment1.R;
 import com.jmm.android.assignment1.model.Emotion;
@@ -21,6 +22,7 @@ import com.jmm.android.assignment1.model.EmotionType;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mLoveImageView;
     private ImageView mAngerImageView;
     private ImageView mFearImageView;
+
+    private ImageView[] emotionImageViews;
 
     private RecyclerView mEmotionEntryRecyclerView;
     private EmotionEntryAdapter mEmotionEntryAdapter;
@@ -45,14 +49,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mEmotionEntries = new ArrayList<>();
+        mEmotionCounts = new HashMap<>();
 
-        // Get all activity_main view references
+        // Initialize all emotion counts to zero
+        setDefaultEmotionCounts();
+
+
+        // Get all references to views
         mJoyImageView = findViewById(R.id.joy_image_view);
         mSadnessImageView = findViewById(R.id.sadness_image_view);
         mSurpriseImageView = findViewById(R.id.surprise_image_view);
         mLoveImageView = findViewById(R.id.love_image_view);
         mAngerImageView = findViewById(R.id.anger_image_view);
         mFearImageView = findViewById(R.id.fear_image_view);
+
+        emotionImageViews = new ImageView[] {
+                mJoyImageView,
+                mSadnessImageView,
+                mSurpriseImageView,
+                mLoveImageView,
+                mAngerImageView,
+                mFearImageView
+        };
+
 
 
         mEmotionEntryRecyclerView = findViewById(R.id.emotion_entry_recycler_view);
@@ -65,15 +84,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up on click listener for all image views
         EmotionOnClickListener emotionOnClickListener = new EmotionOnClickListener();
+        EmotionOnLongClickListener emotionOnLongClickListener = new EmotionOnLongClickListener();
 
-        mJoyImageView.setOnClickListener(emotionOnClickListener);
-        mSadnessImageView.setOnClickListener(emotionOnClickListener);
-        mSurpriseImageView.setOnClickListener(emotionOnClickListener);
-        mLoveImageView.setOnClickListener(emotionOnClickListener);
-        mAngerImageView.setOnClickListener(emotionOnClickListener);
-        mFearImageView.setOnClickListener(emotionOnClickListener);
-
-
+        for (ImageView emotionImageView : emotionImageViews) {
+            emotionImageView.setOnClickListener(emotionOnClickListener);
+            emotionImageView.setOnLongClickListener(emotionOnLongClickListener);
+        }
 
     }
 
@@ -81,17 +97,46 @@ public class MainActivity extends AppCompatActivity {
         mEmotionEntryAdapter.notifyItemChanged(position);
     }
 
+    private void setDefaultEmotionCounts() {
+        for (EmotionType emotionType : EmotionType.values()) {
+            mEmotionCounts.put(emotionType, 0);
+        }
+    }
+
     class EmotionOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Emotion emotion = getEmotionFromResourceId(view.getId());
-            EmotionEntry emotionEntry = new EmotionEntry(emotion);
+            EmotionType emotionType = getEmotionTypeFromResourceId(view.getId());
+            EmotionEntry emotionEntry = new EmotionEntry(new Emotion(emotionType));
 
             mEmotionEntries.add(emotionEntry);
-            updateAdapter(mEmotionEntries.size() - 1);
+
+            // Increment count for the emotion type clicked;
+            mEmotionCounts.put(emotionType, mEmotionCounts.get(emotionType) + 1);
+
+
+            // Notify RecyclerView adapter of the emotion entry we just added
+            updateAdapter(mEmotionEntryAdapter.getItemCount() - 1);
+
+
             System.out.println(mEmotionEntries.size());
         }
     }
+
+    class EmotionOnLongClickListener implements View.OnLongClickListener {
+        @Override
+        public boolean onLongClick(View view) {
+            EmotionType emotionType = getEmotionTypeFromResourceId(view.getId());
+
+            int count = mEmotionCounts.get(emotionType);
+            String toastString = String.valueOf(count) + " " + emotionType.toString() + " emotions";
+
+            Toast.makeText(MainActivity.this, toastString, Toast.LENGTH_SHORT).show();
+
+            return true;
+        }
+    }
+
 
     /* Reference used for using RecyclerView, RecyclerView.Adapter and RecyclerView.ViewHolder
     https://developer.android.com/guide/topics/ui/layout/recyclerview#java
@@ -141,21 +186,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     @Nullable
-    private Emotion getEmotionFromResourceId(int resourceId) {
+    private EmotionType getEmotionTypeFromResourceId(int resourceId) {
         switch (resourceId) {
             case R.id.joy_image_view:
-                return new Emotion(EmotionType.JOY);
+                return EmotionType.JOY;
             case R.id.sadness_image_view:
-                return new Emotion(EmotionType.SADNESS);
+                return EmotionType.SADNESS;
             case R.id.surprise_image_view:
-                return new Emotion(EmotionType.SURPRISE);
+                return EmotionType.SURPRISE;
             case R.id.love_image_view:
-                return new Emotion(EmotionType.LOVE);
+                return EmotionType.LOVE;
             case R.id.anger_image_view:
-                return new Emotion(EmotionType.ANGER);
+                return EmotionType.ANGER;
             case R.id.fear_image_view:
-                return new Emotion(EmotionType.FEAR);
+                return EmotionType.FEAR;
             default:
                 // TODO: Raise an exception
                 return null;
