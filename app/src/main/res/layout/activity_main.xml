@@ -5,34 +5,26 @@ https://stackoverflow.com/questions/43625651/android-add-other-layout-in-constra
 User: taurelas at https://stackoverflow.com/users/3886459/taurelas
 -->
 
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_weight="0.5"
+    android:orientation="vertical"
     tools:context=".controller.MainActivity">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/emotion_chooser"
+    <FrameLayout
+        android:id="@+id/fragment_chooser_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/emotion_entry_recycler_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout="@layout/fragment_chooser" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/emotion_entry_recycler_view"
+    <FrameLayout
+        android:id="@+id/fragment_list_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        tools:listitem="@layout/list_item_emotion" />
+        tools:layout="@layout/fragment_list" />
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
