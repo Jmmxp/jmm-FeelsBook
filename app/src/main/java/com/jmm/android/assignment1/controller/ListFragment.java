@@ -1,5 +1,6 @@
 package com.jmm.android.assignment1.controller;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,9 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,11 +30,17 @@ import java.util.Map;
 
 public class ListFragment extends Fragment {
 
+    private int REQUEST_EMOTION = 0;
+
+    private final static String TAG = "ListFragment";
+
     private RecyclerView mEmotionEntryRecyclerView;
     private EmotionEntryAdapter mEmotionEntryAdapter;
 
     private List<EmotionEntry> mEmotionEntries;
     private Map<EmotionType, Integer> mEmotionCounts;
+
+    private int mEmotionEntryIndex;
 
     @Nullable
     @Override
@@ -82,11 +91,27 @@ public class ListFragment extends Fragment {
         mEmotionEntryAdapter.notifyItemChanged(position);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_EMOTION) {
+                EmotionEntry emotionEntry = (EmotionEntry)
+                        data.getSerializableExtra(EmotionActivity.EXTRA_EMOTION);
+
+                Log.d(TAG, "Hello, comment is " + emotionEntry.getComment());
+
+                mEmotionEntries.set(mEmotionEntryIndex, emotionEntry);
+                updateAdapter(mEmotionEntryIndex);
+            }
+        }
+    }
+
     private void startEmotionActivity(EmotionEntry emotionEntry) {
         Intent intent = new Intent(getActivity(), EmotionActivity.class);
         intent.putExtra(EmotionActivity.EXTRA_EMOTION, emotionEntry);
 
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_EMOTION);
+        mEmotionEntryIndex = mEmotionEntries.indexOf(emotionEntry);
     }
 
     private void setDefaultEmotionCounts() {
@@ -114,12 +139,19 @@ public class ListFragment extends Fragment {
             holder.bind(emotionEntry);
         }
 
+        /* References I looked at for setting up an onClickListener for ViewHolders:
+        https://stackoverflow.com/questions/24885223/why-doesnt-recyclerview-have-onitemclicklistener
+        User: Lee @ https://stackoverflow.com/users/700206/lee
+
+        Android Big Nerd Ranch book, Listing 8.24 "Detecting presses in CrimeHolder"
+        */
         @Override
         public int getItemCount() {
             return mEmotionEntries.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder {
+        class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            private EmotionEntry mEmotionEntry;
             private ImageView mEmotionImageView;
             private TextView mDateTextView;
 
@@ -127,15 +159,24 @@ public class ListFragment extends Fragment {
                 super(itemView);
                 mEmotionImageView = itemView.findViewById(R.id.emotion_image_view);
                 mDateTextView = itemView.findViewById(R.id.date_button);
+
+                itemView.setOnClickListener(this);
             }
 
             public void bind(EmotionEntry emotionEntry) {
+                mEmotionEntry = emotionEntry;
+
                 int emotionImageId = emotionEntry.getEmotion().getDrawableId();
                 mEmotionImageView.setImageResource(emotionImageId);
 
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
                 String dateString = simpleDateFormat.format(emotionEntry.getDate());
                 mDateTextView.setText(dateString);
+            }
+
+            @Override
+            public void onClick(View view) {
+                startEmotionActivity(mEmotionEntry);
             }
 
         }

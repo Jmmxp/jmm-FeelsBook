@@ -1,7 +1,11 @@
 package com.jmm.android.assignment1.controller;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +21,7 @@ public class EmotionActivity extends AppCompatActivity {
 
     private final static String TAG = "EmotionActivity";
 
+    private EmotionEntry mEmotionEntry;
     private ImageView mEmotionImageView;
     private Button mDateButton;
     private EditText mCommentEditText;
@@ -26,16 +31,15 @@ public class EmotionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emotion);
 
-        EmotionEntry emotionEntry = (EmotionEntry) getIntent().getSerializableExtra(EXTRA_EMOTION);
-        Log.d(TAG, String.valueOf(emotionEntry == null));
+        mEmotionEntry = (EmotionEntry) getIntent().getSerializableExtra(EXTRA_EMOTION);
 
         mEmotionImageView = findViewById(R.id.emotion_image_view);
         mDateButton = findViewById(R.id.date_button);
         mCommentEditText = findViewById(R.id.comment_edit_text);
 
-        mEmotionImageView.setImageResource(emotionEntry.getEmotion().getDrawableId());
-        mDateButton.setText(emotionEntry.getDate().toString());
-        mCommentEditText.setText(emotionEntry.getComment());
+        mEmotionImageView.setImageResource(mEmotionEntry.getEmotion().getDrawableId());
+        mDateButton.setText(mEmotionEntry.getDate().toString());
+        mCommentEditText.setText(mEmotionEntry.getComment());
 
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +48,34 @@ public class EmotionActivity extends AppCompatActivity {
             }
         });
 
+        mCommentEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mEmotionEntry.setComment(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mCommentEditText.setSelection(mCommentEditText.length());
+
     }
 
+    @Override
+    public void finish() {
+        Intent data = new Intent();
+        data.putExtra(EXTRA_EMOTION, mEmotionEntry);
+        Log.d(TAG, mEmotionEntry.getComment());
+        setResult(Activity.RESULT_OK, data);
+
+        super.finish();
+    }
 }
