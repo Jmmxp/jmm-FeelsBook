@@ -1,5 +1,6 @@
 package com.jmm.android.assignment1.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -65,6 +66,8 @@ public class ListFragment extends Fragment {
         EmotionEntry emotionEntry = new EmotionEntry(new Emotion(emotionType));
         mEmotionEntries.add(emotionEntry);
 
+        startEmotionActivity(emotionEntry);
+
         // Increment count for the emotion type clicked;
         mEmotionCounts.put(emotionType, mEmotionCounts.get(emotionType) + 1);
 
@@ -77,6 +80,13 @@ public class ListFragment extends Fragment {
 
     public void updateAdapter(int position) {
         mEmotionEntryAdapter.notifyItemChanged(position);
+    }
+
+    private void startEmotionActivity(EmotionEntry emotionEntry) {
+        Intent intent = new Intent(getActivity(), EmotionActivity.class);
+        intent.putExtra(EmotionActivity.EXTRA_EMOTION, emotionEntry);
+
+        startActivity(intent);
     }
 
     private void setDefaultEmotionCounts() {
@@ -116,7 +126,7 @@ public class ListFragment extends Fragment {
             public ViewHolder(View itemView) {
                 super(itemView);
                 mEmotionImageView = itemView.findViewById(R.id.emotion_image_view);
-                mDateTextView = itemView.findViewById(R.id.date_text_view);
+                mDateTextView = itemView.findViewById(R.id.date_button);
             }
 
             public void bind(EmotionEntry emotionEntry) {

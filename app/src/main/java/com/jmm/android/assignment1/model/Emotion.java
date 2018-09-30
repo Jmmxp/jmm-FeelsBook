@@ -4,7 +4,9 @@ import android.support.annotation.Nullable;
 
 import com.jmm.android.assignment1.R;
 
-public class Emotion {
+import java.io.Serializable;
+
+public class Emotion implements Serializable {
     private EmotionType mEmotionType;
 
     public Emotion(EmotionType emotionType) {

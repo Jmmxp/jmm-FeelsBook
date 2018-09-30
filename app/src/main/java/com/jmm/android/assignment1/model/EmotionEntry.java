@@ -1,8 +1,9 @@
 package com.jmm.android.assignment1.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class EmotionEntry {
+public class EmotionEntry implements Serializable {
     private Emotion mEmotion;
     private Date mDate;
     private String mComment;
