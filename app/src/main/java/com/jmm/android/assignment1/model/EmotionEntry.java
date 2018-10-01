@@ -3,6 +3,12 @@ package com.jmm.android.assignment1.model;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * An EmotionEntry represents one instance of an Emotion being created by a user and it
+ * is created when the user clicks on one of the emotion icons in MainActivity.
+ *
+ * This is the element that is displayed by ListFragment's recycler view
+ */
 public class EmotionEntry implements Serializable {
     private Emotion mEmotion;
     private Date mDate;

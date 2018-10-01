@@ -16,6 +16,11 @@ import com.jmm.android.assignment1.R;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * This DialogFragment is started when the user presses the button to edit the time for a given
+ * EmotionEntry. If the positive button of the dialog is clicked it returns a date with the new time
+ * they selected to EmotionActivity (with the same year/month/day as before), otherwise nothing happens.
+ */
 public class TimeDialogFragment extends DialogFragment {
 
     private static final String ARG_TIME = "time";

@@ -6,6 +6,12 @@ import com.jmm.android.assignment1.R;
 
 import java.io.Serializable;
 
+/**
+ * Class representing an 'Emotion' for the user, instances of this class are used in EmotionRecord
+ * I decided to not use 6 subclasses and instead used an enum to handle the different types an
+ * Emotion could be; in my opinion this makes the code much cleaner and maintainable (don't need
+ * to add even more classes if we want to add more emotions to our application)
+ */
 public class Emotion implements Serializable {
     private EmotionType mEmotionType;
 
