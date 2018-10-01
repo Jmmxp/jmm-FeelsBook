@@ -1,6 +1,9 @@
 package com.jmm.android.assignment1.model;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -9,7 +12,7 @@ import java.util.Date;
  *
  * This is the element that is displayed by ListFragment's recycler view
  */
-public class EmotionEntry implements Serializable {
+public class EmotionEntry implements Comparable<EmotionEntry>, Serializable {
     private Emotion mEmotion;
     private Date mDate;
     private String mComment;
@@ -39,5 +42,10 @@ public class EmotionEntry implements Serializable {
     public void setComment(String comment) {
         // Originally used a constant MAXCOMMENTLENGTH but I simply set the EditText's max length instead
         mComment = comment;
+    }
+
+    @Override
+    public int compareTo(@NonNull EmotionEntry emotionEntry) {
+        return mDate.compareTo(emotionEntry.getDate());
     }
 }

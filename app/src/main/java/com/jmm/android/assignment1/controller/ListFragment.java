@@ -34,6 +34,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,13 +101,14 @@ public class ListFragment extends Fragment {
         mEmotionCounts.put(emotionType, mEmotionCounts.get(emotionType) + 1);
 
         // Notify RecyclerView adapter of the emotion entry we just added
-        updateAdapter(mEmotionEntryAdapter.getItemCount() - 1);
+        updateAdapter();
 
         System.out.println(mEmotionEntries.size());
     }
 
-    public void updateAdapter(int position) {
-        mEmotionEntryAdapter.notifyItemChanged(position);
+    public void updateAdapter() {
+        sortEmotionEntries();
+        mEmotionEntryAdapter.notifyDataSetChanged();
         saveToFile();
     }
 
@@ -132,10 +134,14 @@ public class ListFragment extends Fragment {
                 mEmotionEntryAdapter.notifyItemRemoved(mEmotionEntryIndex);
             }
 
-            updateAdapter(mEmotionEntryIndex);
+            updateAdapter();
         }
 
 
+    }
+
+    private void sortEmotionEntries() {
+        Collections.sort(mEmotionEntries);
     }
 
     private void startEmotionActivity(EmotionEntry emotionEntry) {
