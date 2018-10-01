@@ -32,7 +32,6 @@ public class Emotion implements Serializable {
             case FEAR:
                 return R.drawable.fear;
             default:
-                // TODO: Raise an exception
                 return 0;
         }
     }
@@ -53,7 +52,6 @@ public class Emotion implements Serializable {
             case R.id.fear_image_view:
                 return EmotionType.FEAR;
             default:
-                // TODO: Raise an exception
                 return null;
         }
     }
