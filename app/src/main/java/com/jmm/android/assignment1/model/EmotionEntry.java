@@ -3,7 +3,6 @@ package com.jmm.android.assignment1.model;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
-import java.util.Comparator;
 import java.util.Date;
 
 /**

@@ -2,12 +2,11 @@ package com.jmm.android.assignment1.controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -127,7 +126,6 @@ public class EmotionActivity extends AppCompatActivity implements DateDialogFrag
         // Send a successful result back to MainActivity so it knows to update the current EmotionEntry
         Intent data = new Intent();
         data.putExtra(EXTRA_EMOTION, mEmotionEntry);
-        Log.d(TAG, mEmotionEntry.getComment());
         setResult(Activity.RESULT_OK, data);
 
         super.onBackPressed();
