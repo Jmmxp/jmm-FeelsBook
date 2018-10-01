@@ -70,14 +70,13 @@ public class DateDialogFragment extends DialogFragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Calendar calendar1 = Calendar.getInstance();
                         int year = mDatePicker.getYear();
                         int month = mDatePicker.getMonth();
                         int day = mDatePicker.getDayOfMonth();
 
-                        calendar1.set(year, month, day);
+                        calendar.set(year, month, day);
 
-                        Date date = calendar1.getTime();
+                        Date date = calendar.getTime();
 
                         mCallbacks.onDateChanged(date);
                     }

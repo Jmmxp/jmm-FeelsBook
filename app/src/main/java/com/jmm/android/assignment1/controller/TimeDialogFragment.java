@@ -51,6 +51,7 @@ public class TimeDialogFragment extends DialogFragment {
 
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
+        final int second = calendar.get(Calendar.SECOND);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mTimePicker.setHour(hour);
@@ -66,7 +67,6 @@ public class TimeDialogFragment extends DialogFragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Calendar calendar1 = Calendar.getInstance();
                         int hour;
                         int minute;
 
@@ -78,10 +78,11 @@ public class TimeDialogFragment extends DialogFragment {
                             minute = mTimePicker.getCurrentMinute();
                         }
 
-                        calendar1.set(Calendar.HOUR_OF_DAY, hour);
-                        calendar1.set(Calendar.MINUTE, minute);
+                        calendar.set(Calendar.HOUR_OF_DAY, hour);
+                        calendar.set(Calendar.MINUTE, minute);
+                        calendar.set(Calendar.SECOND, second);
 
-                        Date date = calendar1.getTime();
+                        Date date = calendar.getTime();
 
                         mCallbacks.onTimeChanged(date);
                     }

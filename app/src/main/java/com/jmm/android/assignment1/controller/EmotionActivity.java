@@ -9,7 +9,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +19,7 @@ import android.widget.TextView;
 import com.jmm.android.assignment1.R;
 import com.jmm.android.assignment1.model.EmotionEntry;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class EmotionActivity extends AppCompatActivity implements DateDialogFragment.Callbacks, TimeDialogFragment.Callbacks {
@@ -128,6 +128,8 @@ public class EmotionActivity extends AppCompatActivity implements DateDialogFrag
 
     @Override
     public void onTimeChanged(Date date) {
+        Calendar calendar = Calendar.getInstance();
+
         mEmotionEntry.setDate(date);
         updateDate();
     }

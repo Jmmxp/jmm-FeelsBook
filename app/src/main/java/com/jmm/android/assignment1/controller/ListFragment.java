@@ -16,11 +16,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jmm.android.assignment1.R;
 import com.jmm.android.assignment1.model.Emotion;
 import com.jmm.android.assignment1.model.EmotionEntry;
 import com.jmm.android.assignment1.model.EmotionType;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +42,8 @@ public class ListFragment extends Fragment {
 
     private int REQUEST_EMOTION = 0;
 
-    private final static String TAG = "ListFragment";
+    private static final String TAG = "ListFragment";
+    private static final String FILENAME = "file.sav";
 
     private RecyclerView mEmotionEntryRecyclerView;
     private EmotionEntryAdapter mEmotionEntryAdapter;
@@ -40,6 +52,7 @@ public class ListFragment extends Fragment {
     private Map<EmotionType, Integer> mEmotionCounts;
 
     private int mEmotionEntryIndex;
+    private boolean mRequireLoadFromFile = true;
 
     @Nullable
     @Override
@@ -51,6 +64,11 @@ public class ListFragment extends Fragment {
 
         // Initialize all emotion counts to zero
         setDefaultEmotionCounts();
+
+        if (mRequireLoadFromFile) {
+            loadFromFile();
+            mRequireLoadFromFile = false;
+        }
 
         mEmotionEntryRecyclerView = view.findViewById(R.id.emotion_entry_recycler_view);
         // Set up RecyclerView's view layout and its adapter
@@ -82,12 +100,12 @@ public class ListFragment extends Fragment {
         // Notify RecyclerView adapter of the emotion entry we just added
         updateAdapter(mEmotionEntryAdapter.getItemCount() - 1);
 
-
         System.out.println(mEmotionEntries.size());
     }
 
     public void updateAdapter(int position) {
         mEmotionEntryAdapter.notifyItemChanged(position);
+        saveToFile();
     }
 
     @Override
@@ -97,8 +115,8 @@ public class ListFragment extends Fragment {
                 EmotionEntry emotionEntry = (EmotionEntry)
                         data.getSerializableExtra(EmotionActivity.EXTRA_EMOTION);
 
+                mEmotionEntries.set(mEmotionEntryIndex, emotionEntry);
                 Log.d(TAG, "Hello, comment is " + emotionEntry.getComment());
-
             }
 
             if (resultCode == EmotionActivity.RESULT_DELETE) {
@@ -188,6 +206,45 @@ public class ListFragment extends Fragment {
 
         }
 
+    }
+
+    private void loadFromFile() {
+        try {
+            FileInputStream fileInputStream = getActivity().openFileInput(FILENAME);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            Gson gson = new Gson();
+
+            Type emotionEntryListType = new TypeToken<List<EmotionEntry>>(){}.getType();
+            mEmotionEntries = gson.fromJson(bufferedReader, emotionEntryListType);
+
+            fileInputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveToFile() {
+        try {
+            FileOutputStream fileOutputStream = getActivity().openFileOutput(FILENAME, 0);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+
+            Gson gson = new Gson();
+            gson.toJson(mEmotionEntries, bufferedWriter);
+            bufferedWriter.flush();
+
+            // also closes the outputStreamWriter and bufferedWriter since they depend on each other
+            fileOutputStream.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
