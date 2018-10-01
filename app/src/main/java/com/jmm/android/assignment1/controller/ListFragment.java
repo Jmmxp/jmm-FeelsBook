@@ -93,17 +93,25 @@ public class ListFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_EMOTION) {
+        if (requestCode == REQUEST_EMOTION) {
+            if (resultCode == Activity.RESULT_OK) {
                 EmotionEntry emotionEntry = (EmotionEntry)
                         data.getSerializableExtra(EmotionActivity.EXTRA_EMOTION);
 
                 Log.d(TAG, "Hello, comment is " + emotionEntry.getComment());
 
                 mEmotionEntries.set(mEmotionEntryIndex, emotionEntry);
-                updateAdapter(mEmotionEntryIndex);
+
             }
+
+            if (resultCode == EmotionActivity.RESULT_DELETE) {
+                mEmotionEntries.remove(mEmotionEntryIndex);
+            }
+
+            updateAdapter(mEmotionEntryIndex);
         }
+
+
     }
 
     private void startEmotionActivity(EmotionEntry emotionEntry) {

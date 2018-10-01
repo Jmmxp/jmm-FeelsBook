@@ -15,6 +15,10 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/joy" />
 
+    <!--Reference used for changing button style:
+    https://stackoverflow.com/questions/26346727/android-material-design-button-styles
+    User: Yoann Hercouet @ https://stackoverflow.com/users/2206688/yoann-hercouet
+    -->
     <Button
         android:id="@+id/date_button"
         android:layout_width="0dp"
@@ -24,7 +28,8 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/emotion_image_view"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Widget.AppCompat.Button.Colored" />
 
     <EditText
         android:id="@+id/comment_edit_text"

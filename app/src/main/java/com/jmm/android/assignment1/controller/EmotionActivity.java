@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import java.util.Date;
 public class EmotionActivity extends AppCompatActivity implements DateDialogFragment.Callbacks {
 
     public final static String EXTRA_EMOTION = "com.jmm.android.assignment1.extra_emotion";
+    public final static int RESULT_DELETE = 2;
 
     public final static int REQUEST_DATE = 0;
 
@@ -85,24 +87,36 @@ public class EmotionActivity extends AppCompatActivity implements DateDialogFrag
         return true;
     }
 
-    private void updateDate() {
-        mDateButton.setText(mEmotionEntry.getDate().toString());
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_emotion:
+                setResult(RESULT_DELETE, null);
+                finish();
+                return true;
+            default:
+                return true;
+        }
     }
 
     @Override
-    public void finish() {
+    public void onBackPressed() {
         Intent data = new Intent();
         data.putExtra(EXTRA_EMOTION, mEmotionEntry);
         Log.d(TAG, mEmotionEntry.getComment());
         setResult(Activity.RESULT_OK, data);
 
-        super.finish();
+        super.onBackPressed();
     }
 
     @Override
     public void onDateChanged(Date date) {
         mEmotionEntry.setDate(date);
         updateDate();
+    }
+
+    private void updateDate() {
+        mDateButton.setText(mEmotionEntry.getDate().toString());
     }
 
 }
