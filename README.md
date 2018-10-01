@@ -2,7 +2,11 @@ CMPUT 301 Assignment 1 "FeelsBook"
 
 Allows the user to record their feelings, so they can easily see what they were feeling like on any particular day!
 
+
+
 All emotion images used are open source Twitter emojis. Source: https://emojipedia.org/twitter/twemoji-11.1/
+
+
 
 Acknowledgements: 
 Classmates I had casual discussion with about the assignment: Anthony Lam, Vinny Luu (both also in CMPUT 301 LEC B1)
