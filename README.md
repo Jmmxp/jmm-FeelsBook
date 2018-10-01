@@ -1,15 +1,19 @@
-CMPUT 301 Assignment 1 "FeelsBook"
+<h1>CMPUT 301 Assignment 1 "FeelsBook"</h1>
 
 Allows the user to record their feelings, so they can easily see what they were feeling like on any particular day!
 
 
+<img src="https://user-images.githubusercontent.com/11599574/46268437-a9d3db00-c4f7-11e8-95ca-6227ac92f8c2.png" width="350"> <img src="https://user-images.githubusercontent.com/11599574/46268440-ab050800-c4f7-11e8-8629-82c57368fffd.png" width="350">
 
 All emotion images used are open source Twitter emojis. Source: https://emojipedia.org/twitter/twemoji-11.1/
 
 
+<br>
 
-Acknowledgements: 
+<b>Acknowledgements</b>: 
 Classmates I had casual discussion with about the assignment: Anthony Lam, Vinny Luu (both also in CMPUT 301 LEC B1)
+
+<br>
 
 References used:
 Using RecyclerView, RecyclerView.Adapter and RecyclerView.ViewHolder: https://developer.android.com/guide/topics/ui/layout/recyclerview#java
@@ -25,3 +29,4 @@ For getting reference to views for a dialog fragment: Android Big Nerd Ranch boo
 For getting year, month, day from a date object: https://stackoverflow.com/questions/9474121/i-want-to-get-year-month-day-etc-from-java-date-to-compare-with-gregorian-cal, User: Florent Guillaume @ https://stackoverflow.com/users/857987/florent-guillaume
 
 For changing button style: https://stackoverflow.com/questions/26346727/android-material-design-button-styles, User: Yoann Hercouet @ https://stackoverflow.com/users/2206688/yoann-hercouet
+"
