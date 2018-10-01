@@ -8,6 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import com.jmm.android.assignment1.R;
 import com.jmm.android.assignment1.model.EmotionType;
 
+/**
+ * This activity is started when the application is started. Its view consists of two FrameLayouts
+ * that host two fragments respectively; ChooserFragment and ListFragment.
+ *
+ * It is responsible for listening to callback methods from ChooserFragment and calling the appropriate
+ * methods on ListFragment based on the callback (e.g., one of ChooserFragment's emotion images is clicked
+ * and MainActivity must tell ListFragment to add a new EmotionEntry to its list with that emotion
+ */
 public class MainActivity extends AppCompatActivity implements ChooserFragment.Callbacks {
 
     private ChooserFragment mChooserFragment;
@@ -18,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements ChooserFragment.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        // Set up both fragments that we want to host
         FragmentManager fragmentManager = getSupportFragmentManager();
         mChooserFragment = (ChooserFragment) fragmentManager.findFragmentById(R.id.fragment_chooser_container);
 
@@ -36,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements ChooserFragment.C
 
     }
 
+    // Helper method to add a fragment to the given container layout ID
     private void addFragment(int containerLayoutId, Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -45,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements ChooserFragment.C
                 .commit();
     }
 
+
+    // Callback methods that ChooserFragment calls when a user interacts with the top bar's emotions
     @Override
     public void onEmotionAdded(EmotionType emotionType) {
         mListFragment.addEmotionEntry(emotionType);

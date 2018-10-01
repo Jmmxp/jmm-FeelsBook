@@ -43,7 +43,8 @@ public class ListFragment extends Fragment {
     private int REQUEST_EMOTION = 0;
 
     private static final String TAG = "ListFragment";
-    private static final String FILENAME = "file.sav";
+    private static final String ENTRIES_FILENAME = "entries.sav";
+    private static final String COUNTS_FILENAME = "counts.sav";
 
     private RecyclerView mEmotionEntryRecyclerView;
     private EmotionEntryAdapter mEmotionEntryAdapter;
@@ -59,6 +60,7 @@ public class ListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
+        // Initialize entries and counts data structures
         mEmotionEntries = new ArrayList<>();
         mEmotionCounts = new HashMap<>();
 
@@ -120,6 +122,12 @@ public class ListFragment extends Fragment {
             }
 
             if (resultCode == EmotionActivity.RESULT_DELETE) {
+                EmotionType emotionType = mEmotionEntries.get(mEmotionEntryIndex)
+                        .getEmotion().getEmotionType();
+
+                int count = mEmotionCounts.get(emotionType);
+                mEmotionCounts.put(emotionType, count - 1);
+
                 mEmotionEntries.remove(mEmotionEntryIndex);
                 mEmotionEntryAdapter.notifyItemRemoved(mEmotionEntryIndex);
             }
@@ -208,9 +216,18 @@ public class ListFragment extends Fragment {
 
     }
 
+    /**
+     * loadFromFile() and saveFromFile() code was used from the code that was shown to us by TAs
+     * from the CMPUT 301 Lab 3: Java I/O and Persistence with GSON.
+     * The base lonelyTwitter code was written by Joshua Carles Campbell @ https://github.com/joshua2ua/lonelyTwitter
+     *
+     * This loadFromFile and saveFromFile GSON code was introduced to us by TA Shaiful Chowdhury
+     * in the Thursday 5-8 ETLC lab
+     */
     private void loadFromFile() {
         try {
-            FileInputStream fileInputStream = getActivity().openFileInput(FILENAME);
+            // Load EmotionEntries from the entries file
+            FileInputStream fileInputStream = getActivity().openFileInput(ENTRIES_FILENAME);
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
@@ -218,6 +235,16 @@ public class ListFragment extends Fragment {
 
             Type emotionEntryListType = new TypeToken<List<EmotionEntry>>(){}.getType();
             mEmotionEntries = gson.fromJson(bufferedReader, emotionEntryListType);
+
+            fileInputStream.close();
+
+            // Load EmotionEntry counts from the counts file
+            fileInputStream = getActivity().openFileInput(COUNTS_FILENAME);
+            inputStreamReader = new InputStreamReader(fileInputStream);
+            bufferedReader = new BufferedReader(inputStreamReader);
+
+            Type emotionCountsType = new TypeToken<Map<EmotionType, Integer>>(){}.getType();
+            mEmotionCounts = gson.fromJson(bufferedReader, emotionCountsType);
 
             fileInputStream.close();
         } catch (FileNotFoundException e) {
@@ -229,7 +256,8 @@ public class ListFragment extends Fragment {
 
     private void saveToFile() {
         try {
-            FileOutputStream fileOutputStream = getActivity().openFileOutput(FILENAME, 0);
+            // Save EmotionEntries into the entries file
+            FileOutputStream fileOutputStream = getActivity().openFileOutput(ENTRIES_FILENAME, 0);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
 
@@ -237,7 +265,16 @@ public class ListFragment extends Fragment {
             gson.toJson(mEmotionEntries, bufferedWriter);
             bufferedWriter.flush();
 
-            // also closes the outputStreamWriter and bufferedWriter since they depend on each other
+            fileOutputStream.close();
+
+            // Save EmotionEntries into the counts file
+            fileOutputStream = getActivity().openFileOutput(COUNTS_FILENAME, 0);
+            outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+            bufferedWriter = new BufferedWriter(outputStreamWriter);
+
+            gson.toJson(mEmotionCounts, bufferedWriter);
+            bufferedWriter.flush();
+
             fileOutputStream.close();
 
         } catch (FileNotFoundException e) {

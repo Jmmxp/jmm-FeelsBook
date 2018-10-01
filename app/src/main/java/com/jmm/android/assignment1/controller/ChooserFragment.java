@@ -13,6 +13,12 @@ import com.jmm.android.assignment1.R;
 import com.jmm.android.assignment1.model.Emotion;
 import com.jmm.android.assignment1.model.EmotionType;
 
+/**
+ * This fragment represents the top of the main activity's layout (the emotion chooser)
+ * Its ImageView references and its corresponding click listeners are all defined and used in this
+ * fragment.
+ */
+
 public class ChooserFragment extends Fragment {
 
     private ImageView mJoyImageView;
@@ -72,6 +78,10 @@ public class ChooserFragment extends Fragment {
         return view;
     }
 
+    /* OnClickListener that tells MainActivity when one of the emotions on the top bar is clicked
+    This action will be sent to ListFragment and tells it to make a new EmotionEntry that has
+    an Emotion of the type of the emotion that was clicked
+    */
     class EmotionOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -81,6 +91,9 @@ public class ChooserFragment extends Fragment {
         }
     }
 
+    /* OnLongClickListener that tells MainActivity when one of the emotions on the top bar is long clicked
+    This action will be sent to ListFragment and tells it to display the count for that emotion
+    */
     class EmotionOnLongClickListener implements View.OnLongClickListener {
         @Override
         public boolean onLongClick(View view) {

@@ -19,9 +19,17 @@ import android.widget.TextView;
 import com.jmm.android.assignment1.R;
 import com.jmm.android.assignment1.model.EmotionEntry;
 
-import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * This activity is started whenever an EmotionEntry in ListFragment's RecyclerView list is clicked.
+ * Its views are populated with the entry's info and the activity allows the user to edit the
+ * entry's comment and date (both day and time).
+ *
+ * It may send a result of RESULT_DELETE (2) back to MainActivity if the entry is asked by the user
+ * to be deleted, or Activity.RESULT_OK (1) if the user presses the back button, which will
+ * successfully save the EmotionEntry to the list.
+ */
 public class EmotionActivity extends AppCompatActivity implements DateDialogFragment.Callbacks, TimeDialogFragment.Callbacks {
 
     public final static String EXTRA_EMOTION = "com.jmm.android.assignment1.extra_emotion";
@@ -50,9 +58,11 @@ public class EmotionActivity extends AppCompatActivity implements DateDialogFrag
         mTimeButton = findViewById(R.id.time_button);
         mCommentEditText = findViewById(R.id.comment_edit_text);
 
+
         mEmotionImageView.setImageResource(mEmotionEntry.getEmotion().getDrawableId());
         mCommentEditText.setText(mEmotionEntry.getComment());
         updateDate();
+
 
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +112,8 @@ public class EmotionActivity extends AppCompatActivity implements DateDialogFrag
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete_emotion:
+                // When the menu delete option is clicked, set the result for MainActivity
+                // to be RESULT_DELETE so it knows to delete the current EmotionEntry
                 setResult(RESULT_DELETE, null);
                 finish();
                 return true;
@@ -112,6 +124,7 @@ public class EmotionActivity extends AppCompatActivity implements DateDialogFrag
 
     @Override
     public void onBackPressed() {
+        // Send a successful result back to MainActivity so it knows to update the current EmotionEntry
         Intent data = new Intent();
         data.putExtra(EXTRA_EMOTION, mEmotionEntry);
         Log.d(TAG, mEmotionEntry.getComment());
@@ -120,6 +133,11 @@ public class EmotionActivity extends AppCompatActivity implements DateDialogFrag
         super.onBackPressed();
     }
 
+    /* onDateChanged and onTimeChanged are Callback methods that are called when Date and
+    TimeDialogFragment's positive (OK) buttons are clicked;
+
+    These methods are not called if the negative (CANCEL) buttons are clicked.
+    */
     @Override
     public void onDateChanged(Date date) {
         mEmotionEntry.setDate(date);
@@ -128,8 +146,6 @@ public class EmotionActivity extends AppCompatActivity implements DateDialogFrag
 
     @Override
     public void onTimeChanged(Date date) {
-        Calendar calendar = Calendar.getInstance();
-
         mEmotionEntry.setDate(date);
         updateDate();
     }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FeelsBook</string>
+    <string name="app_name">jmm-FeelsBook</string>
     <string name="comment_edit_text_hint">Add a comment to this entry</string>
     <string name="date_button">Change Date</string>
     <string name="time_button">Change Time</string>
