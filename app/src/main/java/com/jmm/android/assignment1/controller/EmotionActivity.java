@@ -52,9 +52,9 @@ public class EmotionActivity extends AppCompatActivity implements DateDialogFrag
         mEmotionEntry = (EmotionEntry) getIntent().getSerializableExtra(EXTRA_EMOTION);
 
         // Get references to the views
-        mEmotionImageView = findViewById(R.id.emotion_image_view);
+        mEmotionImageView = findViewById(R.id.item_emotion_image_view);
         mDateTextView = findViewById(R.id.date_text_view);
-        mDateButton = findViewById(R.id.date_button);
+        mDateButton = findViewById(R.id.item_date_button);
         mTimeButton = findViewById(R.id.time_button);
         mCommentEditText = findViewById(R.id.comment_edit_text);
 

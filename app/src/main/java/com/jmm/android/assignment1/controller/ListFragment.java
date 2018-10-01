@@ -189,11 +189,13 @@ public class ListFragment extends Fragment {
             private EmotionEntry mEmotionEntry;
             private ImageView mEmotionImageView;
             private TextView mDateTextView;
+            private TextView mCommentTextView;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                mEmotionImageView = itemView.findViewById(R.id.emotion_image_view);
-                mDateTextView = itemView.findViewById(R.id.date_button);
+                mEmotionImageView = itemView.findViewById(R.id.item_emotion_image_view);
+                mDateTextView = itemView.findViewById(R.id.item_date_button);
+                mCommentTextView = itemView.findViewById(R.id.item_comment_text_view);
 
                 itemView.setOnClickListener(this);
             }
@@ -207,6 +209,11 @@ public class ListFragment extends Fragment {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String dateString = simpleDateFormat.format(emotionEntry.getDate());
                 mDateTextView.setText(dateString);
+
+                // Only display comment on the list item if it's short enough
+                if (emotionEntry.getComment().length() <= 15) {
+                    mCommentTextView.setText(emotionEntry.getComment());
+                }
             }
 
             @Override
