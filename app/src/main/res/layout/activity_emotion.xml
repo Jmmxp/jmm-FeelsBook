@@ -15,35 +15,58 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/joy" />
 
-    <!--Reference used for changing button style:
-    https://stackoverflow.com/questions/26346727/android-material-design-button-styles
-    User: Yoann Hercouet @ https://stackoverflow.com/users/2206688/yoann-hercouet
-    -->
-    <Button
-        android:id="@+id/date_button"
+    <TextView
+        android:id="@+id/date_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/emotion_image_view"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/Widget.AppCompat.Button.Colored" />
+        tools:text="This will hold the date" />
 
     <EditText
         android:id="@+id/comment_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:inputType="textMultiLine"
         android:hint="@string/comment_edit_text_hint"
+        android:inputType="textMultiLine"
         android:maxLength="100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_button"
-        tools:text="Test text" />
+        app:layout_constraintTop_toBottomOf="@+id/emotion_image_view"
+        tools:text="Comment text" />
+
+    <!--Reference used for changing button style:
+    https://stackoverflow.com/questions/26346727/android-material-design-button-styles
+    User: Yoann Hercouet @ https://stackoverflow.com/users/2206688/yoann-hercouet
+    -->
+    <Button
+        android:id="@+id/date_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/date_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/time_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/time_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

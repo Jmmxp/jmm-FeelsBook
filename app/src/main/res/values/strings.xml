@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">FeelsBook</string>
     <string name="comment_edit_text_hint">Add a comment to this entry</string>
-    <string name="date_picker_message"></string>
+    <string name="date_button">Change Date</string>
+    <string name="time_button">Change Time</string>
+    <string name="date_picker_message">Date for this entry:</string>
+    <string name="time_picker_message">Time for this entry:</string>
     <string name="delete_emotion">Delete</string>
 </resources>

@@ -15,24 +15,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jmm.android.assignment1.R;
 import com.jmm.android.assignment1.model.EmotionEntry;
 
 import java.util.Date;
 
-public class EmotionActivity extends AppCompatActivity implements DateDialogFragment.Callbacks {
+public class EmotionActivity extends AppCompatActivity implements DateDialogFragment.Callbacks, TimeDialogFragment.Callbacks {
 
     public final static String EXTRA_EMOTION = "com.jmm.android.assignment1.extra_emotion";
     public final static int RESULT_DELETE = 2;
-
-    public final static int REQUEST_DATE = 0;
 
     private final static String TAG = "EmotionActivity";
 
     private EmotionEntry mEmotionEntry;
     private ImageView mEmotionImageView;
+    private TextView mDateTextView;
     private Button mDateButton;
+    private Button mTimeButton;
     private EditText mCommentEditText;
 
     @Override
@@ -42,20 +43,30 @@ public class EmotionActivity extends AppCompatActivity implements DateDialogFrag
 
         mEmotionEntry = (EmotionEntry) getIntent().getSerializableExtra(EXTRA_EMOTION);
 
+        // Get references to the views
         mEmotionImageView = findViewById(R.id.emotion_image_view);
+        mDateTextView = findViewById(R.id.date_text_view);
         mDateButton = findViewById(R.id.date_button);
+        mTimeButton = findViewById(R.id.time_button);
         mCommentEditText = findViewById(R.id.comment_edit_text);
 
         mEmotionImageView.setImageResource(mEmotionEntry.getEmotion().getDrawableId());
-
         mCommentEditText.setText(mEmotionEntry.getComment());
         updateDate();
+
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment dialogFragment = DateDialogFragment.newInstance(mEmotionEntry.getDate());
                 dialogFragment.show(getSupportFragmentManager(), TAG);
+            }
+        });
 
+        mTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment dialogFragment = TimeDialogFragment.newInstance(mEmotionEntry.getDate());
+                dialogFragment.show(getSupportFragmentManager(), TAG);
             }
         });
 
@@ -115,8 +126,15 @@ public class EmotionActivity extends AppCompatActivity implements DateDialogFrag
         updateDate();
     }
 
-    private void updateDate() {
-        mDateButton.setText(mEmotionEntry.getDate().toString());
+    @Override
+    public void onTimeChanged(Date date) {
+        mEmotionEntry.setDate(date);
+        updateDate();
     }
+
+    private void updateDate() {
+        mDateTextView.setText(mEmotionEntry.getDate().toString());
+    }
+
 
 }

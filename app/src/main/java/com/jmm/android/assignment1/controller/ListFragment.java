@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -100,12 +99,11 @@ public class ListFragment extends Fragment {
 
                 Log.d(TAG, "Hello, comment is " + emotionEntry.getComment());
 
-                mEmotionEntries.set(mEmotionEntryIndex, emotionEntry);
-
             }
 
             if (resultCode == EmotionActivity.RESULT_DELETE) {
                 mEmotionEntries.remove(mEmotionEntryIndex);
+                mEmotionEntryAdapter.notifyItemRemoved(mEmotionEntryIndex);
             }
 
             updateAdapter(mEmotionEntryIndex);
@@ -185,6 +183,7 @@ public class ListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startEmotionActivity(mEmotionEntry);
+                mEmotionEntryIndex = getAdapterPosition();
             }
 
         }
