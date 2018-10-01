@@ -204,7 +204,7 @@ public class ListFragment extends Fragment {
                 int emotionImageId = emotionEntry.getEmotion().getDrawableId();
                 mEmotionImageView.setImageResource(emotionImageId);
 
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String dateString = simpleDateFormat.format(emotionEntry.getDate());
                 mDateTextView.setText(dateString);
             }

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.jmm.android.assignment1.R;
 import com.jmm.android.assignment1.model.EmotionEntry;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -149,7 +150,9 @@ public class EmotionActivity extends AppCompatActivity implements DateDialogFrag
     }
 
     private void updateDate() {
-        mDateTextView.setText(mEmotionEntry.getDate().toString());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = simpleDateFormat.format(mEmotionEntry.getDate());
+        mDateTextView.setText(dateString);
     }
 
 
