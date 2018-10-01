@@ -2,11 +2,14 @@ package com.jmm.android.assignment1.controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,9 +18,13 @@ import android.widget.ImageView;
 import com.jmm.android.assignment1.R;
 import com.jmm.android.assignment1.model.EmotionEntry;
 
-public class EmotionActivity extends AppCompatActivity {
+import java.util.Date;
+
+public class EmotionActivity extends AppCompatActivity implements DateDialogFragment.Callbacks {
 
     public final static String EXTRA_EMOTION = "com.jmm.android.assignment1.extra_emotion";
+
+    public final static int REQUEST_DATE = 0;
 
     private final static String TAG = "EmotionActivity";
 
@@ -38,12 +45,14 @@ public class EmotionActivity extends AppCompatActivity {
         mCommentEditText = findViewById(R.id.comment_edit_text);
 
         mEmotionImageView.setImageResource(mEmotionEntry.getEmotion().getDrawableId());
-        mDateButton.setText(mEmotionEntry.getDate().toString());
-        mCommentEditText.setText(mEmotionEntry.getComment());
 
+        mCommentEditText.setText(mEmotionEntry.getComment());
+        updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DialogFragment dialogFragment = DateDialogFragment.newInstance(mEmotionEntry.getDate());
+                dialogFragment.show(getSupportFragmentManager(), TAG);
 
             }
         });
@@ -70,6 +79,17 @@ public class EmotionActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_emotion, menu);
+
+        return true;
+    }
+
+    private void updateDate() {
+        mDateButton.setText(mEmotionEntry.getDate().toString());
+    }
+
+    @Override
     public void finish() {
         Intent data = new Intent();
         data.putExtra(EXTRA_EMOTION, mEmotionEntry);
@@ -78,4 +98,11 @@ public class EmotionActivity extends AppCompatActivity {
 
         super.finish();
     }
+
+    @Override
+    public void onDateChanged(Date date) {
+        mEmotionEntry.setDate(date);
+        updateDate();
+    }
+
 }

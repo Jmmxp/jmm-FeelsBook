@@ -8,18 +8,10 @@ public class EmotionEntry implements Serializable {
     private Date mDate;
     private String mComment;
 
-    public static final int MAX_COMMENT_LENGTH = 100;
-
     public EmotionEntry(Emotion emotion) {
         mEmotion = emotion;
         mDate = new Date();
         mComment = "";
-    }
-
-    public EmotionEntry(Emotion emotion, String comment) {
-        mEmotion = emotion;
-        mDate = new Date();
-        mComment = comment;
     }
 
     public Emotion getEmotion() {
@@ -30,15 +22,16 @@ public class EmotionEntry implements Serializable {
         return mDate;
     }
 
+    public void setDate(Date date) {
+        mDate = date;
+    }
+
     public String getComment() {
         return mComment;
     }
 
     public void setComment(String comment) {
-        if (comment.length() <= MAX_COMMENT_LENGTH) {
-            mComment = comment;
-        } else {
-            // Handle comment length being too long
-        }
+        // Originally used a constant MAXCOMMENTLENGTH but I simply set the EditText's max length instead
+        mComment = comment;
     }
 }
